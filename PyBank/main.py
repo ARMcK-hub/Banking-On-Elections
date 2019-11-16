@@ -5,15 +5,16 @@ Creation Date: 11/15/2019
 Description: File CSV reader that analyzes for significant data points.
 '''
 
-# import modules
+
+
+# important modules
 import csv as csv
 
-# designating file
-file = 'budget_data.csv'
+read_file = 'budget_data.csv'
 
 # opening & reading file
-with open(file, 'r') as csv_file:
-    csvreader = csv.reader(csv_file, delimiter = ',')
+with open(read_file, 'r') as read_file:
+    csvreader = csv.reader(read_file, delimiter = ',')
 
     # initializing a header
     csv_header = next(csvreader)
@@ -37,26 +38,47 @@ with open(file, 'r') as csv_file:
             
             change = profit - prev_profit
 
-            #exclude 1st row
+            #exclude 1st row in profit change list
             if len(dates) != 1:
                 profit_change.append(change)
                 
             prev_profit = profit
 
 
-    # Output to terminal
-    print('Financial Analysis')
-    print('--------------------------------------------------')
-    print(f'Total Months:  {len(dates)}')
-    print(f'Total Net Profit:  ${sum(profits)}')
-    print(f'Average Change:  ${round(sum(profit_change)/len(profit_change),2)}')
-    print(f'Greatest Increase in Profit:  {dates[profit_change.index(max(profit_change))]} (${max(profit_change)})')
-    print(f'Greatest Decreast in Profit:  {dates[profit_change.index(min(profit_change))]} (${min(profit_change)})')
-    print('--------------------------------------------------')
+# storing output items in list (output)
+output_items = []
 
+output_items.append('Financial Analysis')
+output_items.append('--------------------------------------------------')
+output_items.append(f'Total Months:  {len(dates)}')
+output_items.append(f'Total Net Profit:  ${sum(profits)}')
+output_items.append(f'Average Change:  ${round(sum(profit_change)/len(profit_change),2)}')
+output_items.append(f'Greatest Increase in Profit:  {dates[profit_change.index(max(profit_change))]} (${max(profit_change)})')
+output_items.append(f'Greatest Decreast in Profit:  {dates[profit_change.index(min(profit_change))]} (${min(profit_change)})')
+output_items.append('--------------------------------------------------')
 
-
-# In addition, your final script should both print the analysis to the terminal and export a text file with the results.
+# printing output items to terminal
+for items in output_items:
+    print(items)
 
 # check if output file exists and up revision item # to last created
+
 # writing output to file
+write_file = 'PyBank_output.csv'
+
+with open(write_file, 'w') as write_file:
+    csvwriter = csv.writer(write_file)
+    
+    for items in output_items:
+        csvwriter.writerow(items)
+
+
+
+
+
+## I used the following to confirm that the print-out of the output file would be the same as the input, even though every character is delimited.
+# with open('PyBank_output.csv', 'r') as csv_file:
+#     csvreader = csv.reader(csv_file)
+    
+#     for itemz in output:
+#         print(itemz)
