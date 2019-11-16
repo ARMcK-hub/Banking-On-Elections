@@ -48,14 +48,8 @@ with open(read_file, 'r') as read_file:
 # storing output items in list (output)
 output_items = []
 
-output_items.append('Financial Analysis')
-output_items.append('--------------------------------------------------')
-output_items.append(f'Total Months:  {len(dates)}')
-output_items.append(f'Total Net Profit:  ${sum(profits)}')
-output_items.append(f'Average Change:  ${round(sum(profit_change)/len(profit_change),2)}')
-output_items.append(f'Greatest Increase in Profit:  {dates[profit_change.index(max(profit_change))]} (${max(profit_change)})')
-output_items.append(f'Greatest Decreast in Profit:  {dates[profit_change.index(min(profit_change))]} (${min(profit_change)})')
-output_items.append('--------------------------------------------------')
+output_items.append(f'Financial Analysis\n--------------------------------------------------\nTotal Months:  {len(dates)}\nTotal Net Profit:  ${sum(profits)}\nAverage Change:  ${round(sum(profit_change)/len(profit_change),2)}\nGreatest Increase in Profit:  {dates[profit_change.index(max(profit_change))]} (${max(profit_change)}\nGreatest Decreast in Profit:  {dates[profit_change.index(min(profit_change))]} (${min(profit_change)}))\n--------------------------------------------------')
+
 
 # printing output items to terminal
 for items in output_items:
@@ -70,15 +64,15 @@ with open(write_file, 'w') as write_file:
     csvwriter = csv.writer(write_file)
     
     for items in output_items:
-        csvwriter.writerow(items)
+         csvwriter.writerow(items)
 
 
 
 
 
-## I used the following to confirm that the print-out of the output file would be the same as the input, even though every character is delimited.
+# # I used the following to confirm that the print-out of the output file would be the same as the input, even though every character is delimited.
 # with open('PyBank_output.csv', 'r') as csv_file:
 #     csvreader = csv.reader(csv_file)
     
-#     for itemz in output:
-#         print(itemz)
+#     for items in output_items:
+#         print(items)
