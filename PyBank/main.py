@@ -3,12 +3,15 @@ VU_DABC Python Challenge Assignment: PyBank
 Author: Andrew McKinney
 Creation Date: 11/15/2019
 Description: File CSV reader that analyzes for significant data points.
-'''
 
+Note: this script works by opening the target csv, reading in the entire as lists, then performing list functions to acquire outputs.
+        The outputs are printed to terminal and stored in a csv.
+'''
 
 
 # important modules
 import csv as csv
+
 
 read_file = 'budget_data.csv'
 
@@ -19,26 +22,25 @@ with open(read_file, 'r') as read_file:
     # initializing a header
     csv_header = next(csvreader)
 
-    # counting rows in csv (assuming individual months)
+    # initializing variables / lists
     dates = []
     profits = []
     profit_change = []
-
     prev_profit = 0
 
-    # iterating through each row in file
+    # iterating through each row in file and storing column data in variables
     for row in csvreader:
         date = row[0]
         profit = int(row[1])
 
-        # excluding any repeat data & creating lists
+        # excluding any repeat dates & creating column data lists (avg change is calculated and appended into a list)
         if date not in dates:
             dates.append(date)
             profits.append(profit)
             
             change = profit - prev_profit
 
-            #exclude 1st row in profit change list
+            # exclude 1st row in profit change list (required to get correct average change)
             if len(dates) != 1:
                 profit_change.append(change)
                 
@@ -55,7 +57,6 @@ output_items.append(f'Financial Analysis\n--------------------------------------
 for items in output_items:
     print(items)
 
-# check if output file exists and up revision item # to last created
 
 # writing output to file
 write_file = 'PyBank_output.csv'
@@ -65,14 +66,3 @@ with open(write_file, 'w') as write_file:
     
     for items in output_items:
          csvwriter.writerow(items)
-
-
-
-
-
-# # I used the following to confirm that the print-out of the output file would be the same as the input, even though every character is delimited.
-# with open('PyBank_output.csv', 'r') as csv_file:
-#     csvreader = csv.reader(csv_file)
-    
-#     for items in output_items:
-#         print(items)
