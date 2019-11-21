@@ -2,87 +2,54 @@
 VU_DABC Python Challenge Assignment: PyPoll
 Author: Andrew McKinney
 Creation Date: 11/19/2019
-Description: File CSV reader that analyzes for significant data points.
+Description: File CSV reader that analyzes election data per candidate using pandas dataframes.
 '''
 
 
 
 # import modules
 import pandas as pd
-import os
 
-
-# # Export file as a CSV, without the Pandas index, but with the header
-# file_one_df.to_csv("Output/fileOne.csv", index=False, header=True)
 
 # designating and reading csv file
 file = 'election_data.csv'
 
 file_df = pd.read_csv(file)
-print(file_df.head())
 
-##store header row
+# storing header row of file
+file_df_header = file_df.columns.values
 
-##outputs to terminal
+# renaming columns for output table (had trouble renaming after grouped)
+renames = {
+    'Voter ID' : 'Candidate Votes',
+    'County' : '% Votes'
+}
 
-##outputs to csv
+file_df  = file_df.rename(columns=renames)
 
+# calculating the total number of votes each candidate won by grouping candidates
+file_df_grouped = file_df.groupby('Candidate').count()
 
+# calculating the total votes cast in the poll
+total_votes = file_df_grouped['Candidate Votes'].sum()
 
+# creating % of total votes won per candidate
+file_df_grouped['% Votes'] = round((file_df_grouped['% Votes']/total_votes)*100, 3)
 
-####################################################
+# sorting table so that it is same as homework example
+file_df_grouped = file_df_grouped.sort_values('% Votes', ascending=False)
 
-
-# read_file = 'budget_data.csv'
-
-# # opening & reading file
-# with open(read_file, 'r') as read_file:
-#     csvreader = csv.reader(read_file, delimiter = ',')
-
-#     # initializing a header
-#     csv_header = next(csvreader)
-
-#     # initializing variables / lists
-#     dates = []
-#     profits = []
-#     profit_change = []
-#     prev_profit = 0
-
-#     # iterating through each row in file and storing column data in variables
-#     for row in csvreader:
-#         date = row[0]
-#         profit = int(row[1])
-
-#         # excluding any repeat dates & creating column data lists (avg change is calculated and appended into a list)
-#         if date not in dates:
-#             dates.append(date)
-#             profits.append(profit)
-            
-#             change = profit - prev_profit
-
-#             # exclude 1st row in profit change list (required to get correct average change)
-#             if len(dates) != 1:
-#                 profit_change.append(change)
-                
-#             prev_profit = profit
+# returning the winner of the election based on popular vote
+poll_weiner = file_df_grouped[file_df_grouped['% Votes'] == file_df_grouped['% Votes'].max()].index.values
 
 
-# # storing output items in list (output)
-# output_items = []
-
-# output_items.append(f'Financial Analysis\n--------------------------------------------------\nTotal Months:  {len(dates)}\nTotal Net Profit:  ${sum(profits)}\nAverage Change:  ${round(sum(profit_change)/len(profit_change),2)}\nGreatest Increase in Profit:  {dates[profit_change.index(max(profit_change))]} (${max(profit_change)}\nGreatest Decreast in Profit:  {dates[profit_change.index(min(profit_change))]} (${min(profit_change)}))\n--------------------------------------------------')
-
-
-# # printing output items to terminal
-# for items in output_items:
-#     print(items)
+# outputs to terminal
+print(f'Election Results\n-------------------------')
+print(file_df_grouped)
+print(f'-------------------------\nTotal Votes: {total_votes}\n-------------------------\nWinner: {poll_weiner[0]}')
 
 
-# # writing output to file
-# write_file = 'PyBank_output.csv'
-
-# with open(write_file, 'w') as write_file:
-#     csvwriter = csv.writer(write_file)
-    
-#     for items in output_items:
-#          csvwriter.writerow(items)
+# outputs to csv (tagged on total votes and election winner to the dataframe)
+file_df_grouped['Total Votes'] = total_votes
+file_df_grouped['Election Winner'] = poll_weiner[0]
+file_df_grouped.to_csv("pypoll_output.csv", index=True, header=True)
