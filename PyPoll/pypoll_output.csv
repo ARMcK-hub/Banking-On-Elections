@@ -1,5 +1,6 @@
-Candidate,Candidate Votes,% Votes,Total Votes,Election Winnder
-Khan,2218231,63.0,3521001,Khan
-Correy,704200,20.0,3521001,Khan
-Li,492940,14.0,3521001,Khan
-O'Tooley,105630,3.0,3521001,Khan
+Candidate,Vote Count,% Votes,Election Standing
+Khan,2218231,63.0,Winner
+Correy,704200,20.0,Loser
+Li,492940,14.0,Loser
+O'Tooley,105630,3.0,Loser
+Total Votes,3521001,,
